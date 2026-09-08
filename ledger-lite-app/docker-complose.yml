@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine    # официальный образ Postgres, alpine — лёгкий вариант
+    container_name: ledger-lite-db
+    environment:
+      POSTGRES_DB: ledger_lite      # база создастся автоматически при первом старте
+      POSTGRES_USER: ledger
+      POSTGRES_PASSWORD: ledger
+    ports:
+      - "5432:5432"               # проброс порта: localhost:5432 -> контейнер:5432
+    volumes:
+      - ledger_lite_data:/var/lib/postgresql/data   # данные не теряются при перезапуске
+    healthcheck:                  # Docker сам проверяет, что Postgres реально готов принимать запросы
+      test: ["CMD-SHELL", "pg_isready -U ledger -d ledger_lite"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  ledger_lite_data:
