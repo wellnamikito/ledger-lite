@@ -28,7 +28,7 @@ public class Account {
     @JoinColumn(name = "account_type_id", nullable = false)
     private AccountType accountType;
 
-    @Column(name = "balance", nullable = false)
+    @Column(name = "balance", nullable = false, columnDefinition = "non_negative_amount_domain")
     private BigDecimal balance;
 
     @Version
