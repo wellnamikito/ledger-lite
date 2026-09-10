@@ -1,9 +1,11 @@
 package com.ledgerlite.ledgerliteapp.common.exception;
 
+import com.ledgerlite.ledgerliteapp.account.AccountDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.OffsetDateTime;
@@ -41,4 +43,48 @@ public class GlobalExceptionHandler {
                 );
         return ResponseEntity.badRequest().body(errors);
     }
+
+    @ExceptionHandler(AccountNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleAccountNotFound(
+            AccountNotFoundException ex
+    ){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(
+                        new ErrorResponse(
+                                HttpStatus.NOT_FOUND.value(),
+                                ex.getMessage(),
+                                OffsetDateTime.now()
+                        )
+                );
+    }
+
+    @ExceptionHandler(AccountTypeNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleAccountTypeNotFound(
+            AccountTypeNotFoundException ex
+    ){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(
+                        new ErrorResponse(
+                                HttpStatus.NOT_FOUND.value(),
+                                ex.getMessage(),
+                                OffsetDateTime.now()
+                        )
+                );
+    }
+
+    @ExceptionHandler(IllegalAccessException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgument(
+            IllegalAccessException ex
+    ){
+        return ResponseEntity.badRequest()
+                .body(
+                        new ErrorResponse(
+                                HttpStatus.BAD_REQUEST.value(),
+                                ex.getMessage(),
+                                OffsetDateTime.now()
+                        )
+                );
+    }
+
+
 }

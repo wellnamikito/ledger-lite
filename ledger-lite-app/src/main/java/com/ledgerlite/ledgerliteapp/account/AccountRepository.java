@@ -1,5 +1,7 @@
 package com.ledgerlite.ledgerliteapp.account;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +13,8 @@ import java.util.UUID;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, UUID> {
+
+    Page<Account> findByOwnerId(UUID ownerId, Pageable pageable);
 
     @Modifying(clearAutomatically = true)
     @Query("""
