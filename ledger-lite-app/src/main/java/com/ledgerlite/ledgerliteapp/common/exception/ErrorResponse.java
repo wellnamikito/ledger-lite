@@ -1,4 +1,4 @@
-package com.ledgerlite.ledgerliteapp.exception;
+package com.ledgerlite.ledgerliteapp.common.exception;
 
 import java.time.OffsetDateTime;
 

@@ -1,9 +1,7 @@
-package com.ledgerlite.ledgerliteapp.exception;
+package com.ledgerlite.ledgerliteapp.common.exception;
 
-import com.ledgerlite.ledgerliteapp.owner.OwnerNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import com.ledgerlite.ledgerliteapp.exception.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
