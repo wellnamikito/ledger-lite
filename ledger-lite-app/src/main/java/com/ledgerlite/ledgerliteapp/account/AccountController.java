@@ -54,7 +54,7 @@ public class AccountController {
 
     @PostMapping("/{id}/deposit")
     public ResponseEntity<AccountDto> deposit(
-            @PathVariable UUID accountId,
+            @PathVariable("id") UUID accountId,
             @Valid @RequestBody DepositRequest request
     ){
         return ResponseEntity.ok(accountService.deposit(accountId, request.amount()));
