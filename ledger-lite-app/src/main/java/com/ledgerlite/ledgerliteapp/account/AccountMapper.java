@@ -4,7 +4,7 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface AccountMapper {
-    @Mapping(source = "accountTypeId", target = "accountType.id")
-    @Mapping(source = "ownerId", target = "owner.id")
+    @Mapping(source = "owner.id", target = "ownerId")
+    @Mapping(source = "accountType.id", target = "accountTypeId")
     AccountDto toDto(Account account);
 }

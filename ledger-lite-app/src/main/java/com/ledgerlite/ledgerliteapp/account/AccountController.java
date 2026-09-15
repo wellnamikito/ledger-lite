@@ -43,7 +43,7 @@ public class AccountController {
         return ResponseEntity.ok(accountService.getAllAccounts(pageable));
     }
 
-    @GetMapping("/by-owner/{ownerId]")
+    @GetMapping("/by-owner/{ownerId}")
     public ResponseEntity<Page<AccountDto>> getAllAccountsByOwner(
             @PathVariable UUID ownerId,
             @PageableDefault(size = 20, sort = "createdAt")
