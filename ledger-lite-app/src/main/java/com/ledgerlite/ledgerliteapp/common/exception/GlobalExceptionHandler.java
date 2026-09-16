@@ -72,9 +72,9 @@ public class GlobalExceptionHandler {
                 );
     }
 
-    @ExceptionHandler(IllegalAccessException.class)
+    @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgument(
-            IllegalAccessException ex
+            IllegalArgumentException ex
     ){
         return ResponseEntity.badRequest()
                 .body(
