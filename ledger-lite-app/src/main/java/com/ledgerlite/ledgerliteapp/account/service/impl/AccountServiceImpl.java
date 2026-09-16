@@ -30,7 +30,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountTypeRepository accountTypeRepository;
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public AccountDto createAccount(CreateAccountRequest request) {
         Owner owner = ownerRepository.findById(request.ownerId())
                 .orElseThrow(() ->
@@ -46,7 +46,6 @@ public class AccountServiceImpl implements AccountService {
         account.setOwner(owner);
         account.setAccountType(accountType);
         account.setBalance(BigDecimal.ZERO);
-        account.setVersion(0L);
         account.setCreatedAt(OffsetDateTime.now());
 
         Account saved = accountRepository.save(account);
@@ -71,7 +70,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public Page<AccountDto> getAllAccountsByOwner(UUID ownerId, Pageable pageable) {
 
         if(!ownerRepository.existsById(ownerId)){
@@ -83,7 +82,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public AccountDto deposit(UUID accountId, BigDecimal amount) {
 
         if(amount == null || amount.compareTo(BigDecimal.ZERO) <= 0){

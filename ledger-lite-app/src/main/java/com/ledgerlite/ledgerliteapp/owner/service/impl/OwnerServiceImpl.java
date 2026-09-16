@@ -21,7 +21,7 @@ public class OwnerServiceImpl implements OwnerService {
 
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public OwnerDTO createOwner(CreateOwnerRequest request) {
        Owner owner = ownerMapper.toEntity(request);
        owner.setId(UUID.randomUUID());

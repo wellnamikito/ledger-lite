@@ -22,7 +22,7 @@ public class TransferServiceImpl implements TransferService {
     private final TransferMapper transferMapper;
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public TransferDto transfer(CreateTransferRequest request, UUID idempotencyKey) {
         // 1. Идемпотентность: если такой улюч обрабатывается - вернуть тот же результат
         var existing = transferRepository.findByIdempotencyKey(idempotencyKey);
@@ -35,7 +35,7 @@ public class TransferServiceImpl implements TransferService {
 
         // 2. Фиксированный порядок блокировки - по возрастанию UUID
         UUID firstId = fromId.compareTo(toId) < 0 ? fromId : toId;
-        UUID secondId = fromId.compareTo(toId) < 0 ? fromId : toId;
+        UUID secondId = fromId.compareTo(toId) < 0 ? toId : fromId;
 
         Account first = accountRepository.findByIdForUpdate(firstId)
                 .orElseThrow(() -> new AccountNotFoundException(firstId));
@@ -44,7 +44,7 @@ public class TransferServiceImpl implements TransferService {
 
         // 3. Определяем, кто из заблокированных - from, кто - to
         Account fromAccount = fromId.equals(firstId) ? first : second;
-        Account toAccount = fromId.equals(secondId) ? second : first;
+        Account toAccount   = fromId.equals(firstId) ? second : first;
 
         Transfer transferRecord = new Transfer();
         transferRecord.setIdempotencyKey(idempotencyKey);
