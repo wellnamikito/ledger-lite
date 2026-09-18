@@ -1,5 +1,7 @@
 package com.ledgerlite.ledgerliteapp.owner.service.impl;
 
+import com.ledgerlite.ledgerliteapp.account.AccountRepository;
+import com.ledgerlite.ledgerliteapp.common.exception.OwnerHasActiveAccountsException;
 import com.ledgerlite.ledgerliteapp.common.exception.OwnerNotFoundException;
 import com.ledgerlite.ledgerliteapp.owner.*;
 import com.ledgerlite.ledgerliteapp.owner.service.OwnerService;
@@ -18,6 +20,8 @@ public class OwnerServiceImpl implements OwnerService {
     private OwnerRepository ownerRepository;
 
     private OwnerMapper ownerMapper;
+
+    private AccountRepository accountRepository;
 
 
     @Override
@@ -65,6 +69,10 @@ public class OwnerServiceImpl implements OwnerService {
     public void deleteOwner(UUID id) {
         if(!ownerRepository.existsById(id)){
             throw new OwnerNotFoundException(id);
+        }
+
+        if(accountRepository.existsByOwnerId(id)){
+            throw new OwnerHasActiveAccountsException(id);
         }
         ownerRepository.deleteById(id);
     }

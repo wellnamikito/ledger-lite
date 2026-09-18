@@ -29,6 +29,8 @@ public interface AccountRepository extends JpaRepository<Account, UUID> {
             @Param("amount") BigDecimal amount
     );
 
+    boolean existsByOwnerId(UUID ownerId);
+
     @Modifying(clearAutomatically = true)
     @Query("""
     UPDATE Account a SET a.balance = a.balance + :amount
