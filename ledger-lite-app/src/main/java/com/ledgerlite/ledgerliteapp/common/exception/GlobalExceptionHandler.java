@@ -114,4 +114,18 @@ public class GlobalExceptionHandler {
                 );
     }
 
+    @ExceptionHandler(OwnerHasActiveAccountsException.class)
+    public ResponseEntity<ErrorResponse> handleOwnerHasActiveAccounts(
+            OwnerHasActiveAccountsException ex
+    ){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(
+                        new ErrorResponse(
+                                HttpStatus.CONFLICT.value(),
+                                ex.getMessage(),
+                                OffsetDateTime.now()
+                        )
+                );
+    }
+
 }
