@@ -8,6 +8,8 @@ import com.ledgerlite.ledgerliteapp.common.exception.TransferNotFoundException;
 import com.ledgerlite.ledgerliteapp.transfer.*;
 import com.ledgerlite.ledgerliteapp.transfer.service.TransferService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,4 +77,16 @@ public class TransferServiceImpl implements TransferService {
                 .orElseThrow(() -> new TransferNotFoundException(id));
         return transferMapper.toDto(transfer);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<TransferDto> getTransfersByAccountId(UUID accountId, Pageable pageable) {
+        if(!accountRepository.existsById(accountId)){
+            throw new AccountNotFoundException(accountId);
+        }
+        return transferRepository.findByAccountId(accountId, pageable)
+                .map(transferMapper::toDto);
+    }
+
+
 }

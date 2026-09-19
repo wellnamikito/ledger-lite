@@ -1,6 +1,8 @@
 package com.ledgerlite.ledgerliteapp.account;
 
 import com.ledgerlite.ledgerliteapp.account.service.AccountService;
+import com.ledgerlite.ledgerliteapp.transfer.TransferDto;
+import com.ledgerlite.ledgerliteapp.transfer.service.TransferService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,7 @@ import java.util.UUID;
 public class AccountController {
 
     private final AccountService accountService;
+    private final TransferService transferService;
 
     @PostMapping
     public ResponseEntity<AccountDto> createAccount(
@@ -58,6 +61,20 @@ public class AccountController {
             @Valid @RequestBody DepositRequest request
     ){
         return ResponseEntity.ok(accountService.deposit(accountId, request.amount()));
+    }
+
+    @GetMapping("/{id}/transfers")
+    public ResponseEntity<Page<TransferDto>> getAccountTransfers(
+            @PathVariable UUID id,
+            @PageableDefault(size = 20, sort = "createdAt")
+            Pageable pageable
+    ){
+        return ResponseEntity.ok(
+                transferService.getTransfersByAccountId(
+                        id,
+                        pageable
+                )
+        );
     }
 
 }
